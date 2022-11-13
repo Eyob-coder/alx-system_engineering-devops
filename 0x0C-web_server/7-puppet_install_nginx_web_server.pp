@@ -1,18 +1,17 @@
-# Install and configure an Nginx server using Puppet
-
+# install nginx
 package { 'nginx':
-  ensure => installed
+  ensure => installed,
+}
+
+file_line { 'aaaaa':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
 }
 
 file { '/var/www/html/index.html':
-  content => 'Hello World',
-}
-
-file_line { '/redirect_me 301':
-  ensure => present,
-  after  => 'listen 80 default_server;',
-  path   => '/etc/nginx/sites-available/default',
-  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
+  content => 'Hello World!',
 }
 
 service { 'nginx':
